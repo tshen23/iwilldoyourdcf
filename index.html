@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I Will Do Your DCF</title>
+<meta name="description" content="A portfolio of financial models — DCFs, trading comps, transaction comps, and LBOs — built from scratch on public filings. Request a model on any public company.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=Geist:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0e0e0e;
+    --paper: #f5f2eb;
+    --paper-dark: #eae6dc;
+    --accent: #1a3a2a;
+    --accent-light: #2d5c40;
+    --muted: #6b6860;
+    --rule: #c8c4b8;
+    --tag-bg: #dff0e5;
+    --tag-text: #1a4a2e;
+    --serif: 'Instrument Serif', Georgia, serif;
+    --mono: 'DM Mono', 'Courier New', monospace;
+    --sans: 'Geist', system-ui, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── NAV ── */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 3rem;
+    border-bottom: 1px solid var(--rule);
+    position: sticky;
+    top: 0;
+    background: var(--paper);
+    z-index: 100;
+  }
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    font-family: var(--mono);
+    letter-spacing: 0.03em;
+    transition: color 0.15s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 6rem 3rem 5rem;
+    max-width: 900px;
+    margin: 0 auto;
+    border-bottom: 1px solid var(--rule);
+    animation: fadeUp 0.5s ease both;
+  }
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--muted);
+  }
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    line-height: 1.05;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--accent-light);
+  }
+  .hero-sub {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 520px;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--accent);
+    color: #f5f2eb;
+    padding: 0.7rem 1.5rem;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-primary:hover { background: var(--accent-light); }
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--rule);
+    color: var(--muted);
+    padding: 0.7rem 1.5rem;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    background: none;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── STATS ── */
+  .stats-strip {
+    display: flex;
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper-dark);
+    animation: fadeUp 0.5s 0.1s ease both;
+  }
+  .stat-item {
+    flex: 1;
+    padding: 1.5rem 2.5rem;
+    border-right: 1px solid var(--rule);
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-number {
+    font-family: var(--serif);
+    font-size: 2.2rem;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--ink);
+    margin-bottom: 0.25rem;
+  }
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* ── MODELS ── */
+  .section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 4rem 3rem;
+    animation: fadeUp 0.5s 0.2s ease both;
+  }
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+  .section-count {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+  .models-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  .model-card {
+    background: var(--paper);
+    padding: 1.75rem 2rem;
+    transition: background 0.15s;
+    position: relative;
+  }
+  .model-card:hover { background: var(--paper-dark); }
+  .model-card.featured {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: start;
+    gap: 2rem;
+  }
+  .card-ticker {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--accent-light);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+  }
+  .card-company {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+    color: var(--ink);
+  }
+  .card-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+  }
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.25rem;
+  }
+  .tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    padding: 3px 8px;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    text-transform: uppercase;
+  }
+  .tag.gray { background: var(--paper-dark); color: var(--muted); }
+  .card-download {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s;
+    padding-bottom: 1px;
+  }
+  .card-download:hover { border-color: var(--accent); }
+  .card-meta { text-align: right; flex-shrink: 0; }
+  .card-implied {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 0.25rem;
+    letter-spacing: 0.03em;
+  }
+  .card-price {
+    font-family: var(--serif);
+    font-size: 2rem;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 0.35rem;
+  }
+  .card-vs {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+  }
+  .badge {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 2px 7px;
+    margin-left: 4px;
+  }
+  .badge-down { background: #fce8e8; color: #5a1a1a; }
+  .badge-up   { background: #dff0e5; color: #1a4a2e; }
+
+  /* ── REQUEST ── */
+  .request-section {
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper-dark);
+  }
+  .request-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 4rem 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+  .request-left h2 {
+    font-family: var(--serif);
+    font-size: 2rem;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+  .request-left h2 em { font-style: italic; color: var(--accent-light); }
+  .request-left p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+  }
+  .request-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+  }
+  .request-detail-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .request-detail-row::before { content: '—'; color: var(--accent-light); }
+
+  .request-form { display: flex; flex-direction: column; gap: 1.25rem; }
+  .form-field { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .form-input {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 0.65rem 0.85rem;
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.15s;
+    width: 100%;
+    -webkit-appearance: none;
+  }
+  .form-input:focus { border-color: var(--accent); }
+  .form-input::placeholder { color: var(--muted); opacity: 0.6; }
+  textarea.form-input { resize: vertical; min-height: 100px; font-family: var(--sans); }
+  select.form-input {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b6860' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.85rem center;
+    background-color: var(--paper);
+    padding-right: 2rem;
+  }
+  .form-submit {
+    background: var(--accent);
+    color: #f5f2eb;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: background 0.15s;
+    width: 100%;
+  }
+  .form-submit:hover { background: var(--accent-light); }
+  .form-success {
+    display: none;
+    background: var(--tag-bg);
+    border: 1px solid #b8dfc5;
+    padding: 1rem 1.25rem;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--tag-text);
+    letter-spacing: 0.03em;
+    line-height: 1.7;
+  }
+
+  /* ── ABOUT ── */
+  .about-section { background: var(--accent); color: #f5f2eb; }
+  .about-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 4rem 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .about-title {
+    font-family: var(--serif);
+    font-size: 2.2rem;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    opacity: 0.95;
+  }
+  .about-body {
+    font-size: 14px;
+    line-height: 1.8;
+    opacity: 0.7;
+    margin-bottom: 1.5rem;
+  }
+  .about-email {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: #a8d4b8;
+    text-decoration: none;
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid rgba(168,212,184,0.25);
+    padding-bottom: 2px;
+    transition: border-color 0.15s;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+  }
+  .about-email:hover { border-color: #a8d4b8; }
+  .about-skills { display: flex; flex-direction: column; gap: 1rem; }
+  .skill-row { padding: 1rem 1.25rem; border: 1px solid rgba(255,255,255,0.12); }
+  .skill-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+  .skill-value { font-size: 13px; color: rgba(255,255,255,0.85); }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--rule);
+    padding: 1.5rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-logo { font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: 0.04em; }
+  .footer-note { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.03em; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 700px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1rem; }
+    .nav-links li:nth-child(2) { display: none; }
+    .hero { padding: 3.5rem 1.5rem 3rem; }
+    .stats-strip { flex-wrap: wrap; }
+    .stat-item { flex: 1 1 50%; border-bottom: 1px solid var(--rule); }
+    .section { padding: 3rem 1.5rem; }
+    .models-grid { grid-template-columns: 1fr; }
+    .model-card.featured { grid-template-columns: 1fr; }
+    .card-meta { text-align: left; }
+    .request-inner { grid-template-columns: 1fr; gap: 2.5rem; padding: 3rem 1.5rem; }
+    .about-inner { grid-template-columns: 1fr; gap: 2.5rem; padding: 3rem 1.5rem; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.25rem 1.5rem; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">iwilldoyourdcf.com</a>
+  <ul class="nav-links">
+    <li><a href="#models">Models</a></li>
+    <li><a href="#request">Request a model</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="mailto:troy@iwilldoyourdcf.com">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Financial modeling &middot; Chicago, IL</div>
+  <h1 class="hero-title">I will do<br><em>your DCF.</em></h1>
+  <p class="hero-sub">A portfolio of financial models &mdash; DCFs, trading comps, transaction comps, and LBOs &mdash; built from scratch on public filings. Want one done on a specific company? Ask below.</p>
+  <div class="hero-actions">
+    <a href="#models" class="btn-primary">View models &rarr;</a>
+    <a href="#request" class="btn-ghost">Request a model &rarr;</a>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stat-item">
+    <div class="stat-number">3</div>
+    <div class="stat-label">Companies modeled</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">5yr</div>
+    <div class="stat-label">Projection horizon</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">10-K</div>
+    <div class="stat-label">Primary source</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">WACC</div>
+    <div class="stat-label">Discount methodology</div>
+  </div>
+</div>
+
+<!-- MODELS -->
+<section class="section" id="models">
+  <div class="section-header">
+    <h2 class="section-title">Financial models</h2>
+    <span class="section-count">3 models</span>
+  </div>
+
+  <div class="models-grid">
+
+    <!-- PepsiCo — featured -->
+    <div class="model-card featured">
+      <div>
+        <div class="card-ticker">PEP &middot; Nasdaq</div>
+        <div class="card-company">PepsiCo, Inc.</div>
+        <p class="card-desc">Full-package model built on PepsiCo's 10-K. Includes a 5-year DCF with WACC-derived discount rate, trading comps across beverage and snack peers, and transaction comps from recent consumer staples M&amp;A.</p>
+        <div class="card-tags">
+          <span class="tag">DCF</span>
+          <span class="tag">Trading comps</span>
+          <span class="tag">Transaction comps</span>
+          <span class="tag gray">Consumer staples</span>
+          <span class="tag gray">S&amp;P 500</span>
+        </div>
+        <!-- Replace href with your actual file path once uploaded, e.g. models/pepsi-dcf.xlsx -->
+        <a href="#" class="card-download">Download Excel &darr;</a>
+      </div>
+      <div class="card-meta">
+        <div class="card-implied">Implied share price</div>
+        <div class="card-price">$163.40</div>
+        <div class="card-vs">vs. $172.00 market<span class="badge badge-down">&minus;5.0%</span></div>
+      </div>
+    </div>
+
+    <!-- LBO -->
+    <div class="model-card">
+      <div class="card-ticker">LBO Exercise</div>
+      <div class="card-company">Coming soon</div>
+      <p class="card-desc">A leveraged buyout on a mid-cap industrials target. 5-year hold, senior + subordinated debt stack, IRR and MoM sensitivity tables.</p>
+      <div class="card-tags">
+        <span class="tag">LBO</span>
+        <span class="tag gray">Industrials</span>
+        <span class="tag gray">In progress</span>
+      </div>
+    </div>
+
+    <!-- Interactive DCF -->
+    <div class="model-card">
+      <div class="card-ticker">Live model &middot; Beta</div>
+      <div class="card-company">Interactive DCF</div>
+      <p class="card-desc">Adjust WACC, terminal growth rate, and revenue assumptions in real time and watch the valuation update instantly.</p>
+      <div class="card-tags">
+        <span class="tag">DCF</span>
+        <span class="tag gray">Interactive</span>
+        <span class="tag gray">Coming soon</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- REQUEST -->
+<div class="request-section" id="request">
+  <div class="request-inner">
+    <div class="request-left">
+      <h2>Want a model<br><em>on your company?</em></h2>
+      <p>Drop a ticker and some context. I&rsquo;ll build a DCF, comps set, or LBO &mdash; from scratch, using public filings &mdash; and post it to the site.</p>
+      <div class="request-details">
+        <div class="request-detail-row">Public companies only (need 10-K or 20-F)</div>
+        <div class="request-detail-row">U.S. or international equities welcome</div>
+        <div class="request-detail-row">Turnaround typically 1&ndash;2 weeks</div>
+        <div class="request-detail-row">Free &mdash; this is practice, not consulting</div>
+      </div>
+    </div>
+
+    <div>
+      <form class="request-form" id="requestForm" novalidate>
+        <div class="form-field">
+          <label class="form-label" for="fname">Your name</label>
+          <input class="form-input" type="text" id="fname" placeholder="Jane Smith" required>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="femail">Your email</label>
+          <input class="form-input" type="email" id="femail" placeholder="jane@example.com" required>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="fticker">Company / ticker</label>
+          <input class="form-input" type="text" id="fticker" placeholder="e.g. AAPL, $MSFT, or Costco" required>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="ftype">Model type</label>
+          <select class="form-input" id="ftype">
+            <option value="">Select a model type</option>
+            <option>DCF only</option>
+            <option>Trading comps only</option>
+            <option>Full package (DCF + comps)</option>
+            <option>LBO</option>
+            <option>Not sure &mdash; your call</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="fnotes">Context or thesis (optional)</label>
+          <textarea class="form-input" id="fnotes" placeholder="e.g. I'm curious whether Apple is fairly valued given its services pivot..."></textarea>
+        </div>
+        <button type="submit" class="form-submit">Submit request &rarr;</button>
+        <div class="form-success" id="formSuccess">
+          Request received &mdash; I&rsquo;ll follow up at your email once the model is underway. Usually within a few days.
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="about-section" id="about">
+  <div class="about-inner">
+    <div>
+      <h2 class="about-title">Built to learn.<br>Shown to prove it.</h2>
+      <p class="about-body">This site is a live record of financial models I build while studying for investment banking and buy-side roles. Every model starts from a public filing and is built from scratch in Excel &mdash; no templates.</p>
+      <a href="mailto:troy@iwilldoyourdcf.com" class="about-email">troy@iwilldoyourdcf.com</a>
+    </div>
+    <div class="about-skills">
+      <div class="skill-row">
+        <div class="skill-label">School</div>
+        <div class="skill-value">University of Chicago &mdash; B.A. Economics &amp; Computer Science, 2026</div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-label">Experience</div>
+        <div class="skill-value">Greenridge Capital Partners &mdash; Senior Analyst</div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-label">Recruiting for</div>
+        <div class="skill-value">Investment banking, summer 2027</div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-label">Tools</div>
+        <div class="skill-value">Excel, Capital IQ, Bloomberg</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">iwilldoyourdcf.com</span>
+  <span class="footer-note">Models are for educational purposes only. Not investment advice.</span>
+</footer>
+
+<script>
+  document.getElementById('requestForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var name   = document.getElementById('fname').value.trim();
+    var email  = document.getElementById('femail').value.trim();
+    var ticker = document.getElementById('fticker').value.trim();
+    var type   = document.getElementById('ftype').value;
+    var notes  = document.getElementById('fnotes').value.trim();
+    if (!name || !email || !ticker) {
+      alert('Please fill in your name, email, and company/ticker.');
+      return;
+    }
+    var subject = encodeURIComponent('Model request: ' + ticker);
+    var body = encodeURIComponent(
+      'Name: ' + name + '\n' +
+      'Email: ' + email + '\n' +
+      'Company / Ticker: ' + ticker + '\n' +
+      'Model type: ' + (type || 'Not specified') + '\n' +
+      (notes ? 'Notes: ' + notes + '\n' : '')
+    );
+    window.location.href = 'mailto:troy@iwilldoyourdcf.com?subject=' + subject + '&body=' + body;
+    document.querySelector('.form-submit').style.display = 'none';
+    document.getElementById('formSuccess').style.display = 'block';
+  });
+</script>
+
+</body>
+</html>
