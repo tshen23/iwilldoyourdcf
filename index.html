@@ -530,7 +530,7 @@
 <!-- STATS -->
 <div class="stats-strip">
   <div class="stat-item">
-    <div class="stat-number">1</div>
+    <div class="stat-number">2</div>
     <div class="stat-label">Companies modeled</div>
   </div>
   <div class="stat-item">
@@ -551,40 +551,46 @@
 <section class="section" id="models">
   <div class="section-header">
     <h2 class="section-title">Financial models</h2>
-    <span class="section-count">1 model</span>
+    <span class="section-count">2 models</span>
   </div>
 
   <div class="models-grid">
 
-    <!-- PepsiCo — featured -->
+    <!-- Dollar General LBO — featured, most recent -->
     <div class="model-card featured">
       <div>
-        <div class="card-ticker">PEP &middot; Nasdaq</div>
-        <div class="card-company">PepsiCo, Inc.</div>
-        <p class="card-desc">DCF built on PepsiCo's FY2025 10-K. 5-year projection with WACC-derived discount rate, exit multiple terminal value, and sensitivity analysis on implied share price.</p>
+        <div class="card-ticker">DG &middot; NYSE &nbsp;&middot;&nbsp; <span style="color:var(--muted);font-weight:400;">May 14, 2026</span></div>
+        <div class="card-company">Dollar General</div>
+        <p class="card-desc">LBO model on Dollar General using FY2025 financials. 5-year hold, 4.5x Debt/EBITDA entry leverage, 8.5% interest rate, cash sweep mechanics, and IRR/MOIC sensitivity tables across exit multiples and acquisition premiums.</p>
         <div class="card-tags">
-          <span class="tag">DCF</span>
-          <span class="tag gray">Consumer staples</span>
-          <span class="tag gray">S&amp;P 500</span>
+          <span class="tag">LBO</span>
+          <span class="tag gray">Consumer Staples</span>
+          <span class="tag gray">NYSE</span>
         </div>
-        <a href="05_10_26 Pepsi DCF.xlsx" class="card-download" download>Download Excel &darr;</a>
+        <a href="05_14_26_Dollar_General_LBO.xlsx" class="card-download" download>Download Excel &darr;</a>
       </div>
       <div class="card-meta">
-        <div class="card-implied">Implied share price</div>
-        <div class="card-price">$129.94</div>
-        <div class="card-vs">vs. $154.62 market<span class="badge badge-down">&minus;15.96%</span></div>
+        <div class="card-implied">IRR &nbsp;/&nbsp; MOIC</div>
+        <div class="card-price">14.9% / 2.0x</div>
+        <div class="card-vs">9.7x entry &middot; 25% premium</div>
       </div>
     </div>
 
-    <!-- LBO -->
+    <!-- PepsiCo DCF -->
     <div class="model-card">
-      <div class="card-ticker">LBO Exercise</div>
-      <div class="card-company">Coming soon</div>
-      <p class="card-desc">A leveraged buyout on a mid-cap industrials target. 5-year hold, senior + subordinated debt stack, IRR and MoM sensitivity tables.</p>
+      <div class="card-ticker">PEP &middot; Nasdaq &nbsp;&middot;&nbsp; <span style="color:var(--muted);font-weight:400;">May 10, 2026</span></div>
+      <div class="card-company">PepsiCo, Inc.</div>
+      <p class="card-desc">DCF built on PepsiCo's FY2025 10-K. 5-year projection with WACC-derived discount rate, exit multiple terminal value, and sensitivity analysis on implied share price.</p>
       <div class="card-tags">
-        <span class="tag">LBO</span>
-        <span class="tag gray">Industrials</span>
-        <span class="tag gray">In progress</span>
+        <span class="tag">DCF</span>
+        <span class="tag gray">Consumer Staples</span>
+        <span class="tag gray">S&amp;P 500</span>
+      </div>
+      <div style="margin-top:1rem;">
+        <div class="card-implied">Implied share price</div>
+        <div class="card-price" style="font-family:var(--serif);font-size:1.8rem;color:var(--ink);line-height:1;margin:0.25rem 0;">$129.94</div>
+        <div class="card-vs" style="margin-bottom:1rem;">vs. $154.62 market<span class="badge badge-down">&minus;15.96%</span></div>
+        <a href="05_10_26 Pepsi DCF.xlsx" class="card-download" download>Download Excel &darr;</a>
       </div>
     </div>
 
